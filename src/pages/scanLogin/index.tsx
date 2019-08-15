@@ -57,15 +57,16 @@ class ScanLogin extends Component<ScanLoginProps, ScanLoginState> {
 
   componentDidMount(): void {
     // eslint-disable-next-line no-undef
-    const ddObj = DDLogin({
+    const ddObj = {
       id: 'dingtalkQr',
       goto: encodeURIComponent(
-        `https://oapi.dingtalk.com/connect/oauth2/sns_authorize?appid=${'dingoabqpoeoug7fyy46z8'}&response_type=code&scope=snsapi_login&state=STATE&redirect_uri=${'www.baidu.com'}`,
+        `https://oapi.dingtalk.com/connect/oauth2/sns_authorize?appid=${'dingoabqpoeoug7fyy46z8'}&response_type=code&scope=snsapi_login&state=STATE&redirect_uri=${'http://localhost:5050/user/ddLogin'}`,
       ),
       style: 'border:none;background-color:#FFFFFF;',
       width: '365',
       height: '400',
-    });
+    };
+    DDLogin(ddObj);
 
     const handleMessage = (event: { origin: string; data: string }) => {
       if (event.origin === 'https://login.dingtalk.com') {

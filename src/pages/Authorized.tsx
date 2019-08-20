@@ -40,14 +40,14 @@ const AuthComponent: React.FC<AuthComponentProps> = ({
   const { currentUser } = user;
   const { routes = [] } = route;
   const isLogin = currentUser && currentUser.name;
-  return (
+  return isLogin ? (
     <Authorized
       authority={getRouteAuthority(location.pathname, routes) || ''}
-      noMatch={isLogin ? <Redirect to="/exception/403" /> : <Redirect to="/user/login" />}
+      noMatch={<Redirect to="/exception/403" />}
     >
       {children}
     </Authorized>
-  );
+  ) : null; // <Redirect to="/scanlogin" />
 };
 
 export default connect(({ user }: ConnectState) => ({

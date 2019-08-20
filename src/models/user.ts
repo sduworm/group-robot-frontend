@@ -1,23 +1,10 @@
 import { Effect } from 'dva';
 import { Reducer } from 'redux';
-
 import { queryCurrent, query as queryUsers } from '@/services/user';
-
-export interface CurrentUser {
-  avatar?: string;
-  name?: string;
-  title?: string;
-  group?: string;
-  signature?: string;
-  tags?: {
-    key: string;
-    label: string;
-  }[];
-  unreadCount?: number;
-}
+import { setAuthority } from '@/utils/authority';
 
 export interface UserModelState {
-  currentUser?: CurrentUser;
+  currentUser?: any;
 }
 
 export interface UserModelType {
@@ -59,10 +46,16 @@ const UserModel: UserModelType = {
 
   reducers: {
     saveCurrentUser(state, action) {
-      return {
-        ...state,
-        currentUser: action.payload || {},
-      };
+      const user = action.payload;
+      if (user && user.id) {
+        setAuthority('user');
+        console.log('SaveCurrentUser', user);
+        return {
+          ...state,
+          currentUser: user || {},
+        };
+      }
+      return state;
     },
     changeNotifyCount(
       state = {

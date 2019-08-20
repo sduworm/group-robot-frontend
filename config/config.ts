@@ -1,6 +1,5 @@
 import { IConfig, IPlugin } from 'umi-types';
 import defaultSettings from './defaultSettings'; // https://umijs.org/config/
-
 import slash from 'slash2';
 import webpackPlugin from './plugin.config';
 import { proxy, mockConf } from './proxy.config';
@@ -92,15 +91,30 @@ export default {
     },
     {
       path: '/',
-      component: '../layouts/BasicLayout',
-      Routes: ['src/pages/Authorized'],
+      component: '../layouts/AuthLayout',
       authority: ['admin', 'user'],
       routes: [
         {
           path: '/',
-          name: 'welcome',
-          icon: 'smile',
-          component: './Welcome',
+          Routes: ['src/pages/Authorized'],
+          routes: [
+            {
+              name: 'main',
+              path: '/',
+              redirect: '/robots',
+            },
+            {
+              name: 'robots',
+              path: '/robots',
+              component: './robots',
+              authority: ['admin', 'user'],
+            },
+          ],
+        },
+        {
+          name: '403',
+          path: '/exception/403',
+          component: './exception/403',
         },
         {
           component: './404',

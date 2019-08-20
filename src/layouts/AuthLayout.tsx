@@ -13,6 +13,9 @@ const AuthLayoutProps: React.FC<AuthLayoutProps> = ({ children, dispatch }) => {
       dispatch({
         type: 'user/fetchCurrent',
       });
+      dispatch({
+        type: 'robots/fetchRobotList',
+      });
     }
   }, []);
 

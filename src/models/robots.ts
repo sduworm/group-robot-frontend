@@ -1,11 +1,10 @@
 import { AnyAction, Reducer } from 'redux';
 
 import { EffectsCommandMap } from 'dva';
-import { CardListItemDataType } from './data.d';
-import { queryFakeList } from './service';
+import { queryRobotList } from '@/services/robots';
 
 export interface StateType {
-  list: CardListItemDataType[];
+  list: any[];
 }
 
 export type Effect = (
@@ -17,14 +16,14 @@ export interface ModelType {
   namespace: string;
   state: StateType;
   effects: {
-    fetch: Effect;
+    fetchRobotList: Effect;
   };
   reducers: {
     queryList: Reducer<StateType>;
   };
 }
 
-const Model: ModelType = {
+const Robots: ModelType = {
   namespace: 'robots',
 
   state: {
@@ -32,8 +31,8 @@ const Model: ModelType = {
   },
 
   effects: {
-    *fetch({ payload }, { call, put }) {
-      const response = yield call(queryFakeList, payload);
+    *fetchRobotList(_, { call, put }) {
+      const response = yield call(queryRobotList);
       yield put({
         type: 'queryList',
         payload: Array.isArray(response) ? response : [],
@@ -51,4 +50,4 @@ const Model: ModelType = {
   },
 };
 
-export default Model;
+export default Robots;

@@ -1,7 +1,7 @@
 import { AnyAction, Reducer } from 'redux';
 
 import { EffectsCommandMap } from 'dva';
-import { queryRobotList } from '@/services/robots';
+import { queryRobotList, setRobot } from '@/services/robots';
 
 export interface StateType {
   list: any[];
@@ -33,6 +33,7 @@ const Robots: ModelType = {
   effects: {
     *fetchRobotList(_, { call, put }) {
       const response = yield call(queryRobotList);
+      yield call(setRobot, { ...response[0], name: '666', id: undefined });
       yield put({
         type: 'queryList',
         payload: Array.isArray(response) ? response : [],

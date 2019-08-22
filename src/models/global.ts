@@ -3,7 +3,6 @@ import { Subscription } from 'dva';
 
 import { Effect } from './connect.d';
 import { NoticeIconData } from '@/components/NoticeIcon';
-import { queryNotices } from '@/services/user';
 
 export interface NoticeItem extends NoticeIconData {
   id: string;
@@ -20,7 +19,6 @@ export interface GlobalModelType {
   namespace: 'global';
   state: GlobalModelState;
   effects: {
-    fetchNotices: Effect;
     clearNotices: Effect;
     changeNoticeReadState: Effect;
   };
@@ -41,23 +39,6 @@ const GlobalModel: GlobalModelType = {
   },
 
   effects: {
-    *fetchNotices(_, { call, put, select }) {
-      const data = yield call(queryNotices);
-      yield put({
-        type: 'saveNotices',
-        payload: data,
-      });
-      const unreadCount: number = yield select(
-        state => state.global.notices.filter(item => !item.read).length,
-      );
-      yield put({
-        type: 'user/changeNotifyCount',
-        payload: {
-          totalCount: data.length,
-          unreadCount,
-        },
-      });
-    },
     *clearNotices({ payload }, { put, select }) {
       yield put({
         type: 'saveClearedNotices',

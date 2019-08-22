@@ -109,6 +109,12 @@ export default {
               component: './robots',
               authority: ['admin', 'user'],
             },
+            {
+              name: 'editRobot',
+              path: '/editRobot',
+              component: './robots/EditRobot',
+              authority: ['admin', 'user'],
+            },
           ],
         },
         {

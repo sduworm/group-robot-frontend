@@ -1,6 +1,6 @@
 import { Button, Card, Icon, List, Typography } from 'antd';
 import React, { Component } from 'react';
-
+import router from 'umi/router';
 import { Dispatch } from 'redux';
 import { connect } from 'dva';
 import { StateType } from '@/models/robots';
@@ -46,6 +46,23 @@ class Robots extends Component<RobotsProps, RobotsState> {
     });
   }
 
+  onClickEdit(id: any, editMode: string) {
+    const {
+      robots: { list },
+      dispatch,
+    } = this.props;
+
+    dispatch({
+      type: 'robots/setCurrent',
+      payload: {
+        editMode,
+        currentRobot: editMode === 'create' ? {} : list.find(item => item.id === id),
+      },
+    });
+
+    router.push('/editRobot');
+  }
+
   render() {
     const {
       robots: { list },
@@ -67,14 +84,18 @@ class Robots extends Component<RobotsProps, RobotsState> {
                   <Card
                     hoverable
                     className={styles.card}
-                    actions={[<a key="option1">操作一</a>, <a key="option2">操作二</a>]}
+                    actions={[
+                      <a key="option1" onClick={() => this.onClickEdit(item.id, 'edit')}>
+                        操作一
+                      </a>,
+                      <a key="option2">操作二</a>,
+                    ]}
                   >
                     <Card.Meta
-                      avatar={<img alt="" className={styles.cardAvatar} src={item.avatar} />}
-                      title={<a>{item.title}</a>}
+                      title={<a>{item.name}</a>}
                       description={
                         <Paragraph className={styles.item} ellipsis={{ rows: 3 }}>
-                          {item.description}
+                          {item.webhook}
                         </Paragraph>
                       }
                     />
@@ -84,7 +105,11 @@ class Robots extends Component<RobotsProps, RobotsState> {
             }
             return (
               <List.Item>
-                <Button type="dashed" className={styles.newButton}>
+                <Button
+                  type="dashed"
+                  className={styles.newButton}
+                  onClick={() => this.onClickEdit(item.id, 'create')}
+                >
                   <Icon type="plus" /> 新增
                 </Button>
               </List.Item>

@@ -5,25 +5,11 @@ export interface Member {
 }
 
 export interface CardListItemDataType {
-  id: string;
-  owner: string;
-  title: string;
-  avatar: string;
-  cover: string;
-  status: 'normal' | 'exception' | 'active' | 'success';
-  percent: number;
-  logo: string;
-  href: string;
-  body?: any;
-  updatedAt: number;
-  createdAt: number;
-  subDescription: string;
-  description: string;
-  activeUser: number;
-  newUser: number;
-  star: number;
-  like: number;
-  message: number;
-  content: string;
-  members: Member[];
+  id: number;
+  userId: number;
+  userOpenId: string;
+  type: string;
+  schedule: string;
+  name: string;
+  webhook: string;
 }

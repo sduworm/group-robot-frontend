@@ -1,9 +1,12 @@
-import { Form, Input, Button } from 'antd';
+import { Form, Input, Button, Select } from 'antd';
 import React, { Component } from 'react';
 import { connect } from 'dva';
 import { Dispatch } from 'redux';
 import { StateType } from '@/models/robots';
 import { CardListItemDataType } from '@/pages/robots/data';
+import { ROBOT_TYPES, ROBOT_SCHEDULES } from '@/utils/dict';
+
+const { Option } = Select;
 
 interface RobotProps {
   robots: { currentRobot: CardListItemDataType };
@@ -83,7 +86,33 @@ class EditRobotForm extends Component<RobotProps> {
                 message: '请输入Webhook',
               },
             ],
-          })(<Input />)}
+          })(<Input.TextArea />)}
+        </Form.Item>
+        <Form.Item label="类型">
+          {getFieldDecorator('type', {
+            initialValue: currentRobot.type || 'ps4.discount.hk',
+          })(
+            <Select>
+              {Object.keys(ROBOT_TYPES).map(type => (
+                <Option key={type} value={type}>
+                  {ROBOT_TYPES[type]}
+                </Option>
+              ))}
+            </Select>,
+          )}
+        </Form.Item>
+        <Form.Item label="策略">
+          {getFieldDecorator('schedule', {
+            initialValue: currentRobot.schedule || 'everyday.9',
+          })(
+            <Select>
+              {Object.keys(ROBOT_SCHEDULES).map(type => (
+                <Option key={type} value={type}>
+                  {ROBOT_SCHEDULES[type]}
+                </Option>
+              ))}
+            </Select>,
+          )}
         </Form.Item>
         <Form.Item {...tailFormItemLayout}>
           <Button type="primary" htmlType="submit">
